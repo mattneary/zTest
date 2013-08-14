@@ -4,7 +4,7 @@ zTest is a benchmarking suite for JavaScript, providing statistical testing of p
 
 Usage
 -----
-Pass a control function, an experiment function, and a sample size to the `ztest` function.
+The `zTest` library may be used with Node.js, as in `example.js`, or on the client-side. To perform a test, pass a control function, an experiment function, and a sample size to the `ztest` function.
 
 ```javascript
 var result = ztest(function() {
@@ -22,9 +22,9 @@ Results are encoded as follows.
 
 ```json
 {
-  fns: [function(){...}, function(){...}],
-  winner: 0,
-  desc: "The null was rejected; the control is more efficient."
+  "fns": [function(){...}, function(){...}],
+  "winner": 0,
+  "desc": "The null was rejected; the control is more efficient."
 }
 ```
 
