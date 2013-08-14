@@ -2,6 +2,8 @@
   var root = this;
   var epsilon = .0001;
 
+  // Take a sample of function calls, recording the duration
+  // of each call.
   var getSample = function(fn, n) {
     var start = (new Date()).getTime(),
     samples = [];
@@ -14,6 +16,7 @@
     return samples;
   };
 
+  // Calculate the tail-probability of the z-score.
   var Z_MAX = 6;
   var P = function(z) {
     var y, x, w;
@@ -46,6 +49,7 @@
     return z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5);
   };
 
+  // Gather standard-deviation, mean, and z-score of a sample.
   var summaryStats = function(sample) {
     var n = sample.length,
       avg = sample.reduce(function(a, b) {
@@ -63,6 +67,7 @@
     };
   };
 
+  // Perform a Z-Test, assuming essentially equal standard deviation.
   var compare = function(control, experiment, n) {
     var muStats = summaryStats(getSample(control, n));
     var Mstats = summaryStats(getSample(experiment, n));
@@ -74,7 +79,7 @@
         return {
           fns: [control, experiment],
           winner: winner,
-          desc: "The null was rejected; the "+(winner==0?"control":"experiment")+" was more efficient."
+          desc: "The null was rejected; the "+(winner==0?"control":"experiment")+" is more efficient."
         };
       } else {
         return {
@@ -88,6 +93,7 @@
     }
   };
 
+  // Export the comparison function.
   if( module ) {
     module.exports = compare;
   } else {
