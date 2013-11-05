@@ -15,7 +15,7 @@ var result = ztest(function() {
   var i = 99;
   while(i--);
   return;
-}, 1000000)
+}, 1000000);
 ```
 
 Results are encoded as follows.

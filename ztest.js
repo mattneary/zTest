@@ -4,14 +4,20 @@
 
   // Take a sample of function calls, recording the duration
   // of each call.
-  var getSample = function(fn, n) {
+  var getSample = function(fn, n, second_limit, match_count) {
+    second_limit = second_limit || .5;
     var start = (new Date()).getTime(),
-    samples = [];
-    while(n--) {
+        _start = start,
+        samples = [],
+	end = start;
+    while(n-- && (end - _start) < 1000*second_limit) {
       fn();
-      var end = (new Date()).getTime();
+      end = (new Date()).getTime();
       samples.push(end - start);
       start = end;
+    }
+    if( end - _start >= 1000*second_limit && match_count ) {
+      throw new Error("Could not finish sampling in a reasonable amount of time.");
     }
     return samples;
   };
@@ -63,16 +69,18 @@
     return {
       std: std,
       mean: avg,
+      n: n,
       se: se
     };
   };
 
   // Perform a Z-Test, assuming essentially equal standard deviation.
-  var compare = function(control, experiment, n) {
-    var muStats = summaryStats(getSample(control, n));
-    var Mstats = summaryStats(getSample(experiment, n));
+  var compare = function(control, experiment, second_limit) {
+    var muStats = summaryStats(getSample(control, 1e6, second_limit));
+    var Mstats = summaryStats(getSample(experiment, muStats.n, 10, true));
     if( muStats.std - Mstats.std < epsilon ) {
       var zScore = (Mstats.mean - muStats.mean)/muStats.se;
+      if( zScore > .5 ) zScore = 1 - zScore;
       var p = P(zScore);
       if( p < .05 ) {
         var winner =  Mstats.mean < muStats.mean ? 1 : 0;
