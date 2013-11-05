@@ -1,10 +1,11 @@
 zTest
 =====
 zTest is a benchmarking suite for JavaScript, providing statistical testing of performance "experiments."
+An appropriate sample size is determined based on the speed of the process.
 
 Usage
 -----
-The `zTest` library may be used with Node.js, as in `example.js`, or on the client-side. To perform a test, pass a control function, an experiment function, and a sample size to the `ztest` function.
+The `zTest` library may be used with Node.js, as in `example.js`, or on the client-side. To perform a test, pass a control function and an experiment function to the `ztest` function.
 
 ```javascript
 var result = ztest(function() {
@@ -15,7 +16,7 @@ var result = ztest(function() {
   var i = 99;
   while(i--);
   return;
-}, 1000000);
+});
 ```
 
 Results are encoded as follows.
